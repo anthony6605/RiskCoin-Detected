@@ -31,3 +31,4 @@ if __name__ == "__main__":
     data = fetch_stablecoin_prices()
     print("Fetched data:", data)
     save_raw_data(data)
+    
