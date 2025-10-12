@@ -163,22 +163,3 @@ class BinanceClient:
         return min(volume_score + spread_score, 100)
 
 
-# Example usage
-if __name__ == "__main__":
-    client = BinanceClient()
-    
-    # Fetch Bitcoin 24h ticker
-    btc_ticker = client.fetch_ticker_24h("BTCUSDT")
-    print(f"BTC Price: ${btc_ticker.get('lastPrice')}, 24h Change: {btc_ticker.get('priceChangePercent')}%")
-    
-    # Fetch order book
-    orderbook = client.fetch_orderbook("BTCUSDT", limit=20)
-    print(f"Order book depth: {len(orderbook.get('bids', []))} bids, {len(orderbook.get('asks', []))} asks")
-    
-    # Compute liquidity
-    liquidity = client.compute_liquidity_score("BTCUSDT")
-    print(f"Liquidity Score: {liquidity:.2f}/100")
-    
-    # Fetch recent klines
-    klines = client.fetch_klines("BTCUSDT", interval="1h", limit=24)
-    print(f"Fetched {len(klines)} hourly klines")
