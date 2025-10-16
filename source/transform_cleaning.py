@@ -158,26 +158,3 @@ def validate_numeric_ranges(
     return df
 
 
-# Example usage
-if __name__ == "__main__":
-    # Create sample data
-    data = {
-        "timestamp": [1609459200000, 1609545600000, 1609632000000],
-        "symbol": ["btc", "eth", "bnb"],
-        "price": [29000, 730, 38],
-        "volume": [1000000, 500000, 200000]
-    }
-    df = pd.DataFrame(data)
-    
-    print("Original:")
-    print(df)
-    
-    # Normalize timestamps
-    df = normalize_timestamps(df)
-    print("\nNormalized timestamps:")
-    print(df)
-    
-    # Standardize symbols
-    df = standardize_coin_symbols(df)
-    print("\nStandardized symbols:")
-    print(df)
