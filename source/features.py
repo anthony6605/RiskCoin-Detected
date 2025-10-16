@@ -158,32 +158,3 @@ def compute_liquidity_proxy(
     return df
 
 
-# Example usage
-if __name__ == "__main__":
-    # Generate sample price data
-    np.random.seed(42)
-    dates = pd.date_range(start="2024-01-01", periods=100, freq="D")
-    prices = 50000 + np.cumsum(np.random.randn(100) * 500)
-    volumes = np.random.randint(1e9, 5e9, size=100, dtype = np.int64)
-    
-    df = pd.DataFrame({
-        "timestamp": dates,
-        "price": prices,
-        "volume": volumes
-    })
-    
-    print("Original data shape:", df.shape)
-    
-    # Compute features
-    df = compute_rolling_features(df, windows=[7, 14, 30])
-    df = compute_volatility_metrics(df, windows=[7, 14, 30])
-    df = compute_momentum_indicators(df)
-    df = compute_drawdown(df)
-    df = compute_volume_features(df)
-    df = compute_liquidity_proxy(df)
-    
-    print("After feature engineering:", df.shape)
-    print("\nFeatures added:")
-    print(df.columns.tolist())
-    print("\nSample data:")
-    print(df[["timestamp", "price", "volatility_score", "liquidity_score", "rsi"]].tail())
