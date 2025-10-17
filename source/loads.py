@@ -22,12 +22,7 @@ class S3Loader:
         """
         Initialize S3 client.
         
-        Args:
-            bucket_name: S3 bucket name
-            aws_access_key_id: AWS access key (or use IAM role)
-            aws_secret_access_key: AWS secret key
-            endpoint_url: Custom endpoint (e.g., for MinIO)
-            region_name: AWS region
+        
         """
         self.bucket_name = bucket_name
         
@@ -73,11 +68,6 @@ class S3Loader:
         """
         Write raw data to S3.
         
-        Args:
-            data: Data to write (dict, list, or string)
-            path: S3 key path (e.g., 'raw/coins/2024-01-01/bitcoin.json')
-            format: Format ('json' or 'text')
-        
         Returns:
             True if successful, False otherwise
         """
@@ -111,11 +101,6 @@ class S3Loader:
         """
         Write DataFrame as Parquet to S3.
         
-        Args:
-            df: DataFrame to write
-            path: S3 key path (e.g., 'processed/prices/2024-01-01/')
-            partition_cols: Columns to partition by
-        
         Returns:
             True if successful, False otherwise
         """
@@ -147,9 +132,6 @@ class S3Loader:
         """
         Write DataFrame as CSV to S3.
         
-        Args:
-            df: DataFrame to write
-            path: S3 key path
         
         Returns:
             True if successful, False otherwise
@@ -181,11 +163,6 @@ class S3Loader:
         """
         Generate partitioned S3 path.
         
-        Args:
-            base_path: Base path (e.g., 'raw/prices')
-            dt: Datetime for date partitioning
-            coin_id: Coin ID for coin partitioning
-        
         Returns:
             Partitioned path string
         """
@@ -203,34 +180,4 @@ class S3Loader:
         return "/".join(parts)
 
 
-# Example usage
-if __name__ == "__main__":
-    
-    
-    # Load environment variables from .env file
-    load_dotenv()
-    
-    # Get credentials from .env file
-    aws_access_key_id = os.getenv('aws_access_key_id')
-    aws_secret_access_key = os.getenv('aws_secret_access_key')
-    bucket_name = os.getenv('s3_bucket_name', 'coin-project-bucket-1')
-    
-    # Create S3Loader with credentials from .env
-    loader = S3Loader(
-        bucket_name=bucket_name,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    
-    # Test with sample data
-    sample_data = {
-        "coin_id": "bitcoin",
-        "price": 67234.50,
-        "timestamp": "2024-01-15T10:00:00Z"
-    }
-    
-    # Write test data
-    raw_path = loader.generate_partition_path("raw/prices", coin_id="bitcoin")
-    loader.write_raw(sample_data, f"{raw_path}/data.json")
-    
-    print("S3Loader test complete!")
+
