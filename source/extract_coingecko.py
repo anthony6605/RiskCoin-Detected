@@ -145,3 +145,19 @@ class CoinGeckoClient:
         return None
 
 
+# Example usage
+if __name__ == "__main__":
+    client = CoinGeckoClient()
+    
+    # Fetch Bitcoin OHLCV
+    btc_ohlc = client.fetch_ohlcv("bitcoin", days=30)
+    print(f"Fetched {len(btc_ohlc)} OHLC data points for Bitcoin")
+    
+    # Fetch Bitcoin metadata
+    btc_meta = client.fetch_metadata("bitcoin")
+    if btc_meta:
+        print(f"Bitcoin: {btc_meta.get('name')}, Rank: {btc_meta.get('market_cap_rank')}")
+    
+    # Fetch top 20 coins
+    top_coins = client.fetch_market_data(per_page=20)
+    print(f"Fetched {len(top_coins)} top coins")

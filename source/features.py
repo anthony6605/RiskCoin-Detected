@@ -1,13 +1,29 @@
+"""
+Feature engineering transformers for crypto data.
+Computes rolling statistics, technical indicators, and derived metrics.
+"""
+
 import pandas as pd
 import numpy as np
 from typing import List, Optional
 
-#Compute rolling window features for price data.
+
 def compute_rolling_features(
     df: pd.DataFrame,
     windows: List[int] = [7, 14, 30],
     price_col: str = "price"
 ) -> pd.DataFrame:
+    """
+    Compute rolling window features for price data.
+    
+    Args:
+        df: DataFrame with price data
+        windows: List of rolling window sizes (in periods)
+        price_col: Name of price column
+    
+    Returns:
+        DataFrame with added rolling features
+    """
     df = df.copy()
     
     if price_col not in df.columns:
@@ -33,13 +49,23 @@ def compute_rolling_features(
     
     return df
 
-#Compute volatility metrics.
+
 def compute_volatility_metrics(
     df: pd.DataFrame,
     price_col: str = "price",
     windows: List[int] = [7, 14, 30]
 ) -> pd.DataFrame:
+    """
+    Compute volatility metrics.
     
+    Args:
+        df: DataFrame with price data
+        price_col: Name of price column
+        windows: List of window sizes for calculations
+    
+    Returns:
+        DataFrame with volatility metrics
+    """
     df = df.copy()
     
     # Log returns
@@ -63,12 +89,21 @@ def compute_volatility_metrics(
     
     return df
 
-#Compute momentum indicators.
+
 def compute_momentum_indicators(
     df: pd.DataFrame,
     price_col: str = "price"
 ) -> pd.DataFrame:
+    """
+    Compute momentum indicators (RSI, MACD, etc.).
     
+    Args:
+        df: DataFrame with price data
+        price_col: Name of price column
+    
+    Returns:
+        DataFrame with momentum indicators
+    """
     df = df.copy()
     
     # RSI (Relative Strength Index)
@@ -87,9 +122,18 @@ def compute_momentum_indicators(
     
     return df
 
-#Compute drawdown metrics.
+
 def compute_drawdown(df: pd.DataFrame, price_col: str = "price") -> pd.DataFrame:
+    """
+    Compute drawdown metrics.
     
+    Args:
+        df: DataFrame with price data
+        price_col: Name of price column
+    
+    Returns:
+        DataFrame with drawdown metrics
+    """
     df = df.copy()
     
     # Running maximum
@@ -103,14 +147,23 @@ def compute_drawdown(df: pd.DataFrame, price_col: str = "price") -> pd.DataFrame
     
     return df
 
-#Compute volume-based features.
+
 def compute_volume_features(
     df: pd.DataFrame,
     volume_col: str = "volume",
     price_col: str = "price"
 ) -> pd.DataFrame:
+    """
+    Compute volume-based features.
     
+    Args:
+        df: DataFrame with volume data
+        volume_col: Name of volume column
+        price_col: Name of price column
     
+    Returns:
+        DataFrame with volume features
+    """
     df = df.copy()
     
     if volume_col not in df.columns:
@@ -131,13 +184,23 @@ def compute_volume_features(
     
     return df
 
-#Compute liquidity proxy score.
+
 def compute_liquidity_proxy(
     df: pd.DataFrame,
     volume_col: str = "volume",
     price_col: str = "price"
 ) -> pd.DataFrame:
+    """
+    Compute liquidity proxy score.
     
+    Args:
+        df: DataFrame with volume and price data
+        volume_col: Name of volume column
+        price_col: Name of price column
+    
+    Returns:
+        DataFrame with liquidity score
+    """
     df = df.copy()
     
     if volume_col not in df.columns:
@@ -158,3 +221,32 @@ def compute_liquidity_proxy(
     return df
 
 
+# Example usage
+if __name__ == "__main__":
+    # Generate sample price data
+    np.random.seed(42)
+    dates = pd.date_range(start="2024-01-01", periods=100, freq="D")
+    prices = 50000 + np.cumsum(np.random.randn(100) * 500)
+    volumes = np.random.randint(1e9, 5e9, size=100)
+    
+    df = pd.DataFrame({
+        "timestamp": dates,
+        "price": prices,
+        "volume": volumes
+    })
+    
+    print("Original data shape:", df.shape)
+    
+    # Compute features
+    df = compute_rolling_features(df, windows=[7, 14, 30])
+    df = compute_volatility_metrics(df, windows=[7, 14, 30])
+    df = compute_momentum_indicators(df)
+    df = compute_drawdown(df)
+    df = compute_volume_features(df)
+    df = compute_liquidity_proxy(df)
+    
+    print("After feature engineering:", df.shape)
+    print("\nFeatures added:")
+    print(df.columns.tolist())
+    print("\nSample data:")
+    print(df[["timestamp", "price", "volatility_score", "liquidity_score", "rsi"]].tail())

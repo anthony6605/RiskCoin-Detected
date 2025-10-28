@@ -2,33 +2,17 @@
 __pycache__/
 *.pyc
 *.pyo
+pyvenv.cfg
 
 # Virtual environments
 .venv/
 venv/
 env/
-
-# Jupyter checkpoints
-.ipynb_checkpoints/
-
-# Local data files
-data/raw/
-data/processed/
+anthony/
 
 # Environment variables (API keys, secrets, configs)
 .env
-config.yaml
-
-# Logs
-*.log
-
 # OS-specific
 .DS_Store
 Thumbs.db
 
-# Streamlit
-.streamlit/
-# VSCode
-.vscode 
-#pyvenv
-pyvenv.cfg 

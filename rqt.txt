@@ -1,5 +1,7 @@
 requests
-pandas
-streamlit
 python-dotenv
 apache-airflow
+boto3
+pandas
+pyarrow
+numpy

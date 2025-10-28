@@ -1,63 +1,28 @@
-import boto3
-from botocore.exceptions import ClientError
+"""
+Local file system data loaders for writing raw and processed data.
+Supports JSON, Parquet, and CSV formats with partitioning.
+"""
+
 import pandas as pd
 import json
 from datetime import datetime
 from typing import Any, Dict, Optional
-import io
 import os
-from dotenv import load_dotenv
+from pathlib import Path
 
-class S3Loader:
-    """Loader for writing data to S3 (or MinIO for local dev)"""
+
+class LocalLoader:
+    """Loader for writing data to local file system"""
     
-    def __init__(
-        self,
-        bucket_name: str,
-        aws_access_key_id: Optional[str] = None,
-        aws_secret_access_key: Optional[str] = None,
-        endpoint_url: Optional[str] = None,  # For MinIO
-        region_name: str = "us-east-1"
-    ):
+    def __init__(self, base_path: str = "data"):
         """
-        Initialize S3 client.
+        Initialize local file system loader.
         
-        
+        Args:
+            base_path: Base directory for data storage (default: 'data')
         """
-        self.bucket_name = bucket_name
-        
-        session_kwargs = {"region_name": region_name}
-        if aws_access_key_id and aws_secret_access_key:
-            session_kwargs["aws_access_key_id"] = aws_access_key_id
-            session_kwargs["aws_secret_access_key"] = aws_secret_access_key
-        
-        self.s3_client = boto3.client(
-            "s3",
-            endpoint_url=endpoint_url,
-            **session_kwargs
-        )
-        
-        # Ensure bucket exists
-        self._ensure_bucket_exists()
-    
-    def _ensure_bucket_exists(self):
-        """Create bucket if it doesn't exist"""
-        try:
-            self.s3_client.head_bucket(Bucket=self.bucket_name)
-            print(f"Bucket '{self.bucket_name}' exists")
-        except ClientError as e:
-            error_code = e.response['Error']['Code']
-            if error_code == '404':
-                try:
-                    self.s3_client.create_bucket(Bucket=self.bucket_name)
-                    print(f"Created bucket: {self.bucket_name}")
-                except ClientError as create_error:
-                    print(f"Error creating bucket: {create_error}")
-            else:
-                print(f"Error checking bucket: {e}")
-        except Exception as e:
-            print(f"Connection error: {e}")
-            print("Make sure AWS credentials are configured or MinIO is running")
+        self.base_path = Path(base_path)
+        self.base_path.mkdir(parents=True, exist_ok=True)
     
     def write_raw(
         self,
@@ -66,30 +31,32 @@ class S3Loader:
         format: str = "json"
     ) -> bool:
         """
-        Write raw data to S3.
+        Write raw data to local file system.
+        
+        Args:
+            data: Data to write (dict, list, or string)
+            path: File path relative to base_path (e.g., 'raw/coins/2024-01-01/bitcoin.json')
+            format: Format ('json' or 'text')
         
         Returns:
             True if successful, False otherwise
         """
         try:
-            if format == "json":
-                body = json.dumps(data, indent=2)
-                content_type = "application/json"
-            else:
-                body = str(data)
-                content_type = "text/plain"
+            full_path = self.base_path / path
+            full_path.parent.mkdir(parents=True, exist_ok=True)
             
-            self.s3_client.put_object(
-                Bucket=self.bucket_name,
-                Key=path,
-                Body=body.encode('utf-8'),
-                ContentType=content_type
-            )
-            print(f"Wrote {format} to s3://{self.bucket_name}/{path}")
+            if format == "json":
+                with open(full_path, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2)
+            else:
+                with open(full_path, 'w', encoding='utf-8') as f:
+                    f.write(str(data))
+            
+            print(f"✓ Wrote {format} to {full_path}")
             return True
             
-        except ClientError as e:
-            print(f"Error writing to S3: {e}")
+        except Exception as e:
+            print(f"✗ Error writing file: {e}")
             return False
     
     def write_parquet(
@@ -99,29 +66,26 @@ class S3Loader:
         partition_cols: Optional[list] = None
     ) -> bool:
         """
-        Write DataFrame as Parquet to S3.
+        Write DataFrame as Parquet to local file system.
+        
+        Args:
+            df: DataFrame to write
+            path: File path relative to base_path (e.g., 'processed/prices/2024-01-01/data.parquet')
+            partition_cols: Columns to partition by
         
         Returns:
             True if successful, False otherwise
         """
         try:
-            # Write to buffer
-            buffer = io.BytesIO()
-            df.to_parquet(buffer, engine='pyarrow', compression='snappy', index=False)
-            buffer.seek(0)
+            full_path = self.base_path / path
+            full_path.parent.mkdir(parents=True, exist_ok=True)
             
-            # Upload to S3
-            self.s3_client.put_object(
-                Bucket=self.bucket_name,
-                Key=path,
-                Body=buffer.getvalue(),
-                ContentType="application/octet-stream"
-            )
-            print(f"Wrote Parquet to s3://{self.bucket_name}/{path}")
+            df.to_parquet(full_path, engine='pyarrow', compression='snappy', index=False)
+            print(f"✓ Wrote Parquet to {full_path}")
             return True
             
         except Exception as e:
-            print(f"Error writing Parquet: {e}")
+            print(f"✗ Error writing Parquet: {e}")
             return False
     
     def write_csv(
@@ -130,28 +94,25 @@ class S3Loader:
         path: str
     ) -> bool:
         """
-        Write DataFrame as CSV to S3.
+        Write DataFrame as CSV to local file system.
         
+        Args:
+            df: DataFrame to write
+            path: File path relative to base_path
         
         Returns:
             True if successful, False otherwise
         """
         try:
-            buffer = io.StringIO()
-            df.to_csv(buffer, index=False)
-            buffer.seek(0)
+            full_path = self.base_path / path
+            full_path.parent.mkdir(parents=True, exist_ok=True)
             
-            self.s3_client.put_object(
-                Bucket=self.bucket_name,
-                Key=path,
-                Body=buffer.getvalue().encode('utf-8'),
-                ContentType="text/csv"
-            )
-            print(f"Wrote CSV to s3://{self.bucket_name}/{path}")
+            df.to_csv(full_path, index=False)
+            print(f"✓ Wrote CSV to {full_path}")
             return True
             
-        except ClientError as e:
-            print(f"Error writing CSV: {e}")
+        except Exception as e:
+            print(f"✗ Error writing CSV: {e}")
             return False
     
     def generate_partition_path(
@@ -161,7 +122,12 @@ class S3Loader:
         coin_id: Optional[str] = None
     ) -> str:
         """
-        Generate partitioned S3 path.
+        Generate partitioned file path.
+        
+        Args:
+            base_path: Base path (e.g., 'raw/prices')
+            dt: Datetime for date partitioning
+            coin_id: Coin ID for coin partitioning
         
         Returns:
             Partitioned path string
@@ -180,4 +146,32 @@ class S3Loader:
         return "/".join(parts)
 
 
-
+# Example usage
+if __name__ == "__main__":
+    # Local file system loader
+    loader = LocalLoader(base_path="data")
+    
+    # Write raw JSON
+    sample_data = {
+        "coin_id": "bitcoin",
+        "price": 67234.50,
+        "timestamp": "2024-01-15T10:00:00Z"
+    }
+    
+    raw_path = loader.generate_partition_path("raw/prices", coin_id="bitcoin")
+    loader.write_raw(sample_data, f"{raw_path}/data.json")
+    
+    # Write Parquet
+    df = pd.DataFrame({
+        "timestamp": pd.date_range("2024-01-01", periods=10, freq="H"),
+        "price": [50000 + i * 100 for i in range(10)],
+        "volume": [1e9 + i * 1e8 for i in range(10)]
+    })
+    
+    parquet_path = loader.generate_partition_path("processed/prices", coin_id="bitcoin")
+    loader.write_parquet(df, f"{parquet_path}/data.parquet")
+    
+    print("\n✓ Local loader test complete!")
+    print(f"  Data written to {loader.base_path}/")
+    print(f"  Raw JSON: {raw_path}/data.json")
+    print(f"  Parquet: {parquet_path}/data.parquet")
