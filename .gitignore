@@ -23,9 +23,7 @@ dist/
 # TypeScript
 *.tsbuildinfo
 
-# Env
-.env
-.env.*.local
+
 
 # Logs
 npm-debug.log*
