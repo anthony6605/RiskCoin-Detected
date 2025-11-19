@@ -65,7 +65,7 @@ RiskCoin-Detected/
 ```
 ## 🛠️ Technology Stack
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
-## 📊 Data Flow Architecture
+Data Flow Architecture
 ```bash
 ┌─────────────────┐
 │ External APIs │
@@ -115,39 +115,16 @@ RiskCoin-Detected/
 
 ### Component Interaction1. 
 <img width="1536" height="1024" alt="Data Architecture" src="https://github.com/user-attachments/assets/650f0c56-8c33-4284-b59c-371dbe26d4a5" />
-
-Default Weights:
-Volatility: 35%
-Liquidity: 25%
-Sentiment: 20%
-Momentum: 20%
-Score Range: 0-100 (lower = lower risk)
+### Score Criteria
+- **Default Weights:
+- **Volatility: 35%
+- **Liquidity: 25%
+- **Sentiment: 20%
+- **Momentum: 20%
+- **Score Range: 0-100 (lower = lower risk)
 🧩 Project Components
-Frontend Components
-Pages
-Index.tsx: Landing page displaying top 20 coins, search bar, and feature highlights
-CoinDetail.tsx: Individual coin analysis page with detailed metrics, charts, and risk breakdown
-NotFound.tsx: 404 error page
-Reusable Components
-CoinCard.tsx: Displays coin information in a card format with risk score, price, and metrics
-SearchBar.tsx: Search functionality with autocomplete suggestions
-StabilityChart.tsx: Interactive price chart with moving averages and volatility bands
-MetricsPanel.tsx: Displays risk score, volatility, liquidity, and sentiment metrics
-UI Components (src/components/ui/)
-Built on Radix UI primitives
-Fully accessible and customizable
-Includes: buttons, cards, dialogs, forms, charts, and more
-Backend Components
-ETL Pipeline
-extract_coingecko.py: CoinGecko API client with rate limiting and error handling
-extracts_binance.py: Binance API client for orderbook data
-transform_cleaning.py: Data validation and cleaning utilities
-features.py: Feature engineering functions (rolling stats, technical indicators)
-loads.py: Data serialization and storage utilities
-Risk Modeling
-risk_models.py: Composite risk score computation with configurable weights
-Orchestration
-airflow/dags.py: Airflow DAG definition for automated ETL pipeline execution
+<img width="1024" height="1024" alt="Project Component" src="https://github.com/user-attachments/assets/fde7837e-780d-4162-8f50-8fae3a009b7c" />
+
 🔄 CI/CD Pipeline
 Current Setup
 The project currently uses:
