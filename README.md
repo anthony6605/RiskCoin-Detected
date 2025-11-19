@@ -66,6 +66,12 @@ RiskCoin-Detected/
 ## 🛠️ Technology Stack
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
 
+## 📊 System Architecture Diagram
+![Architecture Diagram](/mnt/data/3866bee9-1437-4e00-84b0-49208cd279b7.jpg)
+
+## 🧩 Component Breakdown Diagram
+![Component Breakdown](/mnt/data/cc8fc20b-998d-4ab4-9d20-3e6bb1bcc351.jpg)
+
 🚀 User Setup
 ```python
     pip install pandas
