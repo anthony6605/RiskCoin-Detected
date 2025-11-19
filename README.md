@@ -113,9 +113,10 @@ Data Flow Architecture
 ```
 
 
-## Component Interaction. 
-<img width="1536" height="1024" alt="Data Architecture" src="https://github.com/user-attachments/assets/650f0c56-8c33-4284-b59c-371dbe26d4a5" />
-## Score Criteria
+## Component Interaction.
+This flowchart shows how data moves through the system — from Airflow and Python scripts to feature engineering, risk modeling, and frontend rendering.
+<img src="https://github.com/user-attachments/assets/your-project-components-image-id.jpeg" alt="Project Components Diagram" width="100%" />
+
 - **Default Weights:
 - **Volatility: 35%
 - **Liquidity: 25%
@@ -123,7 +124,8 @@ Data Flow Architecture
 - **Momentum: 20%
 - **Score Range: 0-100 (lower = lower risk)
 ## Project Components
-<img width="1024" height="1024" alt="Project Component" src="https://github.com/user-attachments/assets/fde7837e-780d-4162-8f50-8fae3a009b7c" />
+This diagram outlines the structure of the project, including frontend pages, reusable components, backend ETL scripts, risk modeling, and CI/CD setup.
+<img src="https://github.com/user-attachments/assets/your-project-components-image-id.jpeg" alt="Project Components Diagram" width="100%" />
 
 🔄 CI/CD Pipeline
 Current Setup
