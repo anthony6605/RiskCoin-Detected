@@ -66,15 +66,50 @@ RiskCoin-Detected/
 ## 🛠️ Technology Stack
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
 ## 📊 Data Flow Architecture
+```bash
+┌─────────────────┐
+│ External APIs │
+│ (CoinGecko, │
+│ Binance) │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Airflow DAGs │ ◄─── Orchestrates ETL pipeline
+│ (dags.py) │ Runs every 6 hours
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Extract Layer │ ◄─── Python scripts fetch raw data
+│ (source/.py) │ Stores in data/raw/
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Transform Layer │ ◄─── Cleans, validates, engineers features
+│ (features.py, │ Computes rolling statistics
+│ transform_) │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Risk Models │ ◄─── Computes composite risk scores
+│ (risk_models.py)│ Weighted combination of metrics
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ Processed Data │ ◄─── Structured data ready for consumption
+│ (data/processed)│
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│ React Frontend │ ◄─── TypeScript/React displays data
+│ (src/) │ TanStack Query manages state
+└─────────────────┘
 
-```mermaid
-flowchart TD
-    A[External APIs<br/>(CoinGecko, Binance)] --> B[Airflow DAGs<br/>(dags.py)<br/>Runs every 6 hours]
-    B --> C[Extract Layer<br/>(source/.py)<br/>Stores in data/raw/]
-    C --> D[Transform Layer<br/>(features.py, transform_)<br/>Cleans, validates, engineers features<br/>Computes rolling statistics]
-    D --> E[Risk Models<br/>(risk_models.py)<br/>Computes composite risk scores<br/>Weighted combination of metrics]
-    E --> F[Processed Data<br/>(data/processed)<br/>Structured data ready for consumption]
-    F --> G[React Frontend<br/>(src/)<br/>TypeScript/React UI<br/>TanStack Query manages state]
 ```
 
 
