@@ -2,6 +2,8 @@
 
 A comprehensive cryptocurrency risk analysis platform that provides real-time risk scoring, volatility analysis, and investment insights for 10,000+ cryptocurrencies. The platform combines data engineering pipelines, machine learning models, and a modern web interface to deliver actionable risk metrics.
 
+<img width="2048" height="1225" alt="f75e9c56-7dd7-4300-935e-69cfd5ab3e30" src="https://github.com/user-attachments/assets/f4376abb-c35d-4007-94c3-76ec1f323b97" />
+
 ## 📋 Overview
 
 The Crypto Risk Analyzer is a full-stack application that:
