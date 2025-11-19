@@ -69,10 +69,12 @@ RiskCoin-Detected/
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
 
 ## 📊 System Architecture Diagram
-![Architecture Diagram](/mnt/data/3866bee9-1437-4e00-84b0-49208cd279b7.png)
+<img width="1024" height="1024" alt="System Architecture" src="https://github.com/user-attachments/assets/6d6a0bc0-f24b-45a1-ae2d-b7eb80f4253d" />
+
 
 ## 🧩 Component Breakdown Diagram
-![Component Breakdown](/mnt/data/cc8fc20b-998d-4ab4-9d20-3e6bb1bcc351.png)
+
+<img width="1024" height="1024" alt="Component Breakdown" src="https://github.com/user-attachments/assets/04401980-8df9-4cf5-9672-29697e657d7c" />
 
 🚀 User Setup
 ```python
