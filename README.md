@@ -67,93 +67,147 @@ RiskCoin-Detected/
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
 
 🚀 User Setup
+```python
+    pip install pandas
+```
+I’ll rewrite your entire setup section exactly in that style.
+
+✅ Setup Instructions
+🔧 Prerequisites
+Node.js 18+ and npm
+
+Python 3.9+
+
+Apache Airflow (for ETL pipeline)
+
+Git
+
+🚀 Frontend Setup
+Clone the repository
+markdown
+Copy code
 ```bash
-    Prerequisites
-        Node.js 18+ and npm
-        Python 3.9+
-        Apache Airflow (for ETL pipeline)
-        Git
+    git clone <repository-url>
+    cd RiskCoin-Detected
+```
+Install dependencies
+markdown
+Copy code
+```bash
+    npm install
+```
+Start development server
+markdown
+Copy code
+```bash
+    npm run dev
+```
+Access the application
+Open:
+http://localhost:8080
 
-    Frontend Setup
-        Clone the repository:
-            git clone <repository-url>
-            cd RiskCoin-Detected
+🛠 Backend / Data Pipeline Setup
+Create Python virtual environment
+markdown
+Copy code
+```bash
+    python3 -m venv venv
+    source venv/bin/activate      # macOS / Linux
+    # Windows:
+    # venv\Scripts\activate
+```
+Install Python dependencies
+markdown
+Copy code
+```bash
+    pip install pandas numpy requests apache-airflow
+```
+⚙️ Airflow Configuration
+Initialize Airflow database
+markdown
+Copy code
+```bash
+    airflow db init
+```
+Create admin user
+markdown
+Copy code
+```bash
+    airflow users create \
+        --username admin \
+        --firstname Admin \
+        --lastname User \
+        --role Admin \
+        --email admin@example.com
+```
+Start Airflow
+markdown
+Copy code
+```bash
+    airflow webserver --port 8080
+```
+markdown
+Copy code
+```bash
+    airflow scheduler
+```
+🗂 Update DAG Paths (if needed)
+Edit airflow/dags.py to match your project path
 
-        Install dependencies:
-            npm install
+Ensure the source/ directory is included in the Python path
 
-        Start development server:
-            npm run dev
+🧪 Run ETL Pipeline Manually (Optional)
+markdown
+Copy code
+```bash
+    python -m source.extract_coingecko
+    python -m source.extracts_binance
+```
+🔐 Environment Variables
+Create a .env file in the root:
 
-        Access the application:
-            Open http://localhost:8080 in your browser
+markdown
+Copy code
+```env
+    COINGECKO_API_KEY=your_api_key_here
+    BINANCE_API_KEY=your_api_key_here
+    BINANCE_SECRET_KEY=your_secret_key_here
+```
+🏗 Build for Production
+markdown
+Copy code
+```bash
+    npm run build
+```
+Output will be located in:
 
-    Backend/Data Pipeline Setup
-        Create Python virtual environment:
-            python3 -m venv venv
-            source venv/bin/activate      # On Windows: venv\Scripts\activate
+dist/ directory
 
-        Install Python dependencies:
-            pip install pandas numpy requests apache-airflow
+Deploy dist/ to your hosting provider
 
-    Configure Airflow
-        # Initialize Airflow database
-            airflow db init
+❗ Troubleshooting
+Port already in use
+Change port in vite.config.ts
 
-        # Create admin user
-            airflow users create \
-                --username admin \
-                --firstname Admin \
-                --lastname User \
-                --role Admin \
-                --email admin@example.com
+Or stop the process using port 8080
 
-        # Start Airflow webserver
-            airflow webserver --port 8080
+Module not found
+Run npm install again
 
-        # Start Airflow scheduler (in another terminal)
-            airflow scheduler
+Ensure all deps exist in package.json
 
-    Update DAG paths (if needed):
-        Edit airflow/dags.py to match your project path
-        Ensure source/ directory is in Python path
+Airflow DAG not showing
+Check DAG file syntax
 
-    Run ETL pipeline manually (optional):
-            python -m source.extract_coingecko
-            python -m source.extracts_binance
+Ensure project root is in Python path
 
-    Environment Variables
-        Create a .env file in the project root (optional):
-            # CoinGecko API (optional, for higher rate limits)
-            COINGECKO_API_KEY=your_api_key_here
+Check Airflow logs
 
-            # Binance API (optional)
-            BINANCE_API_KEY=your_api_key_here
-            BINANCE_SECRET_KEY=your_secret_key_here
-
-    Build for Production
-        # Build frontend
-            npm run build
-
-        # Output will be in dist/ directory
-        # Deploy dist/ to your hosting service
-
-    Troubleshooting
-        Port already in use:
-            Change port in vite.config.ts or kill process using port 8080
-
-        Module not found errors:
-            Run npm install again
-            Check that all dependencies are in package.json
-
-        Airflow DAG not showing:
-            Check DAG file syntax
-            Verify Python path includes project root
-            Check Airflow logs for errors
-
-        TypeScript errors:
-            Run npm run lint to see detailed errors
-            Ensure all imports are correct
+TypeScript errors
+markdown
+Copy code
+```bash
+    npm run lint
 ```
 
 📝 Development Notes
