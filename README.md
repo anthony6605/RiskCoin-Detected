@@ -13,7 +13,7 @@ The Crypto Risk Analyzer is a full-stack application that:
 - **Visualizes** insights through an interactive React-based dashboard
 
 The system is designed with a modern data engineering architecture, featuring automated ETL pipelines orchestrated by Apache Airflow, a TypeScript/React frontend, and Python-based risk modeling.
-
+```bash
 ## 🏗️ Project Structure
 RiskCoin-Detected/
 ├── airflow/                  # Airflow DAG definitions
@@ -62,7 +62,7 @@ RiskCoin-Detected/
 ├── tsconfig.json            # TypeScript configuration
 ├── vite.config.ts           # Vite build configuration
 └── README.md                # Project documentation
-
+```
 ## 🛠️ Technology Stack
 <img width="1024" height="1024" alt="WorkFlow" src="https://github.com/user-attachments/assets/1e281d6a-2a5f-44d9-9291-3ca137503958" />
 ## 📊 Data Flow Architecture
