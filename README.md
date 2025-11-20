@@ -92,10 +92,16 @@ Apache Airflow (for ETL pipeline)
 
 Git
 
+📦 Install Python Dependencies
+```bash
+    pip install -r requirements.txt
+```
+
 🚀 Frontend Setup
 Clone the repository
 markdown
 Copy code
+
 ```bash
     git clone <repository-url>
     cd RiskCoin-Detected
