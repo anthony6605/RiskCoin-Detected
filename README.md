@@ -80,7 +80,7 @@ RiskCoin-Detected/
 ```python
     pip install pandas
 ```
-I’ll rewrite your entire setup section exactly in that style.
+
 
 ✅ Setup Instructions
 🔧 Prerequisites
